@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
-
+require('dotenv').config();  // Load environment variables from .env file
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -14,12 +14,11 @@ const SECRET_KEY = "your_secret_key";
 
 // Setup MySQL connection
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'gowtham@MYSQL29',           // use the name we declare in the .env file 
-  database: 'mappy_db'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
-
 
 db.connect(err => {
   if (err) throw err;
@@ -286,5 +285,6 @@ app.delete('/api/activities/:type/:activityId/:userId', (req, res) => {
 
 
 app.listen(5000, () => {
-  console.log("Server running on port 5000");
+  console.log("Server running on port 5000"); 
 });
+
